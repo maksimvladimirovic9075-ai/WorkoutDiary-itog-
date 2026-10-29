@@ -23,6 +23,7 @@ namespace WorkoutDiary
         {
             try
             {
+
                 dgvAthletes.AutoGenerateColumns = false;
                 dgvProgress.AutoGenerateColumns = false;
                 dgvWorkouts.AutoGenerateColumns = false;
@@ -95,6 +96,7 @@ namespace WorkoutDiary
                 MessageBox.Show(ex.ToString());
             }
         }
+
         private void btnAssign_Click(object sender, EventArgs e)
         {
             if (athleteId == 0 || cmbProgram.SelectedValue == null) return;
@@ -119,6 +121,12 @@ namespace WorkoutDiary
             new SetsTableAdapter().Update(sTable);
             ShowStats();
             MessageBox.Show("Подходы сохранены");
+
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            var data = new SetsTableAdapter().GetDataByWorkout(1);
+            sw.Stop();
+            MessageBox.Show("Строк: " + data.Count + ", время: " + sw.ElapsedMilliseconds + " мс");
+
         }
         private void ShowStats()
         {
@@ -127,6 +135,12 @@ namespace WorkoutDiary
             lblCntExercises.Text = Convert.ToString(new SetsTableAdapter().GetExerciseCount(athleteId));
             dgvProgress.DataSource = new ExerciseProgressTableAdapter().GetProgress(athleteId);
         }
+
+        private void btnAssign_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
         private void LoadAthlete()
         {
             ShowStats();
